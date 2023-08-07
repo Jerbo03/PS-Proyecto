@@ -16,11 +16,6 @@ std::string user = "root";
 std::string password = "2oo3_@J3rb0?72i89a5a.BUddY";
 std::string database = "ps_db";
 
-int test() {
-	return 5;
-}
-
-
 #pragma once
 
 namespace FormTest {
@@ -33,12 +28,12 @@ namespace FormTest {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Summary for MyForm
+	/// Summary for Interfaz
 	/// </summary>
-	public ref class MyForm : public System::Windows::Forms::Form
+	public ref class Interfaz : public System::Windows::Forms::Form
 	{
 	public:
-		MyForm(void) {
+		Interfaz(void) {
 			InitializeComponent();
 
 			try {
@@ -64,7 +59,7 @@ namespace FormTest {
 					Button^ button = gcnew Button();
 					button->Text = msclr::interop::marshal_as<String^>((res->getString(1)).c_str());
 					button->Dock = DockStyle::Fill;
-					button->Click += gcnew EventHandler(this, &MyForm::displayTable);
+					button->Click += gcnew EventHandler(this, &Interfaz::displayTable);
 					this->menuTablas->Controls->Add(button, 0, row);
 					row++;
 					displayTable((res->getString(1)).c_str());
@@ -82,7 +77,7 @@ namespace FormTest {
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		~MyForm() {
+		~Interfaz() {
 			if (components) {
 				delete components;
 			}
@@ -165,7 +160,7 @@ namespace FormTest {
 			this->tableView->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
 			this->tableView->Size = System::Drawing::Size(700, 325);
 			this->tableView->TabIndex = 3;
-			this->tableView->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::tableView_CellContentClick);
+			this->tableView->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Interfaz::tableView_CellContentClick);
 			// 
 			// LblTabla
 			// 
@@ -212,7 +207,7 @@ namespace FormTest {
 			this->BtnCerrar->TabIndex = 8;
 			this->BtnCerrar->Text = L"SALIR";
 			this->BtnCerrar->UseVisualStyleBackColor = true;
-			this->BtnCerrar->Click += gcnew System::EventHandler(this, &MyForm::BtnCerrar_Click);
+			this->BtnCerrar->Click += gcnew System::EventHandler(this, &Interfaz::BtnCerrar_Click);
 			// 
 			// leftPanel
 			// 
@@ -238,7 +233,7 @@ namespace FormTest {
 			this->BtnNuevo->TabIndex = 10;
 			this->BtnNuevo->Text = L"Nuevo";
 			this->BtnNuevo->UseVisualStyleBackColor = true;
-			this->BtnNuevo->Click += gcnew System::EventHandler(this, &MyForm::BtnNuevo_Click);
+			this->BtnNuevo->Click += gcnew System::EventHandler(this, &Interfaz::BtnNuevo_Click);
 			// 
 			// BtnEditar
 			// 
@@ -251,7 +246,7 @@ namespace FormTest {
 			this->BtnEditar->TabIndex = 11;
 			this->BtnEditar->Text = L"Editar";
 			this->BtnEditar->UseVisualStyleBackColor = true;
-			this->BtnEditar->Click += gcnew System::EventHandler(this, &MyForm::BtnEditar_Click);
+			this->BtnEditar->Click += gcnew System::EventHandler(this, &Interfaz::BtnEditar_Click);
 			// 
 			// BtnBorrar
 			// 
@@ -265,7 +260,7 @@ namespace FormTest {
 			this->BtnBorrar->TabIndex = 12;
 			this->BtnBorrar->Text = L"Borrar";
 			this->BtnBorrar->UseVisualStyleBackColor = true;
-			this->BtnBorrar->Click += gcnew System::EventHandler(this, &MyForm::BtnBorrar_Click);
+			this->BtnBorrar->Click += gcnew System::EventHandler(this, &Interfaz::BtnBorrar_Click);
 			// 
 			// BtnGuardar
 			// 
@@ -278,7 +273,7 @@ namespace FormTest {
 			this->BtnGuardar->TabIndex = 20;
 			this->BtnGuardar->Text = L"Guardar";
 			this->BtnGuardar->UseVisualStyleBackColor = true;
-			this->BtnGuardar->Click += gcnew System::EventHandler(this, &MyForm::BtnGuardar_Click);
+			this->BtnGuardar->Click += gcnew System::EventHandler(this, &Interfaz::BtnGuardar_Click);
 			// 
 			// LblTitleID
 			// 
@@ -324,7 +319,7 @@ namespace FormTest {
 			this->camposTabla->Size = System::Drawing::Size(500, 145);
 			this->camposTabla->TabIndex = 0;
 			// 
-			// MyForm
+			// Interfaz
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
@@ -340,8 +335,8 @@ namespace FormTest {
 			this->Controls->Add(this->bottomPanel);
 			this->Controls->Add(this->topPanel);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
-			this->Name = L"MyForm";
-			this->Text = L"MyForm";
+			this->Name = L"Interfaz";
+			this->Text = L"Interfaz";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->tableView))->EndInit();
 			this->topPanel->ResumeLayout(false);
 			this->ResumeLayout(false);
@@ -349,9 +344,22 @@ namespace FormTest {
 		}
 #pragma endregion
 	void displayTable(std::string tableName) {
+		this->menuTablas->Enabled = true;
+		this->tableView->Enabled = true;
+
+		this->BtnNuevo->Enabled = true;
 		this->BtnEditar->Enabled = false;
 		this->BtnBorrar->Enabled = false;
 		this->BtnGuardar->Enabled = false;
+
+		this->LblID->Text = msclr::interop::marshal_as<System::String^>("0");
+		for each (Control ^ control in this->camposTabla->Controls) {
+			TextBox^ textBox = dynamic_cast<TextBox^>(control);
+			if (textBox != nullptr) {
+				textBox->Text = "";
+				textBox->Enabled = false;
+			}
+		}
 
 		this->LblTabla->Text = msclr::interop::marshal_as<System::String^>("Tabla: "+tableName);
 		try {
@@ -484,6 +492,13 @@ namespace FormTest {
 		this->BtnEditar->Enabled = false;
 		this->BtnBorrar->Enabled = false;
 		this->BtnGuardar->Enabled = true;
+
+		for each (Control ^ control in this->camposTabla->Controls) {
+			TextBox^ textBox = dynamic_cast<TextBox^>(control);
+			if (textBox != nullptr) {
+				textBox->Enabled = true;
+			}
+		}
 	}
 
 	private: System::Void BtnBorrar_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -512,11 +527,12 @@ namespace FormTest {
 
 				// Execute a query and fetch data
 				stmt = con->createStatement();
-				const char* query = (std::string("DELETE * FROM ") + tableName +
-					std::string("WHERE ") +
+				const char* query = (std::string("DELETE FROM ") + tableName +
+					std::string(" WHERE ") +
 					msclr::interop::marshal_as<std::string>(this->tableView->Columns[0]->HeaderText) +
-					std::string(" = ") + std::to_string(id)
+					std::string(" = ") + std::to_string(id) + std::string(";")
 				).c_str();
+				std::cout << query << std::endl;
 				res = stmt->executeQuery(query);
 
 				delete res;
@@ -529,53 +545,125 @@ namespace FormTest {
 		}
 	}
 
+	void nuevoRegistro(std::string tableName) {
+		while (true) {
+			try {
+				sql::mysql::MySQL_Driver* driver;
+				sql::Connection* con;
+				sql::Statement* stmt;
+				sql::ResultSet* res;
+
+				// Create a MySQL connection
+				driver = sql::mysql::get_mysql_driver_instance();
+				con = driver->connect(host, user, password);
+
+				// Connect to the database
+				con->setSchema(database);
+
+				// Execute a query and fetch data
+				array<String^>^ headerArray = gcnew array<String^>(this->tableView->Columns->Count);
+				for (int i = 1; i < this->tableView->Columns->Count; i++) {
+					headerArray[i - 1] = this->tableView->Columns[i]->HeaderText;
+				}
+				std::string headers = msclr::interop::marshal_as<std::string>(String::Join(", ", headerArray));
+				array<String^>^ valueArray = gcnew array<String^>(this->tableView->Columns->Count + 1);
+				valueArray[0] = "";
+				int i = 1;
+				for each (Control ^ control in this->camposTabla->Controls) {
+					TextBox^ textBox = dynamic_cast<TextBox^>(control);
+					if (textBox != nullptr) {
+						if (textBox->Text == "") throw std::string("Campos incompletos");
+						valueArray[i] = textBox->Text;
+						i++;
+					}
+				}
+				std::string values = msclr::interop::marshal_as<std::string>(String::Join("', '", valueArray));
+				stmt = con->createStatement();
+				const char* query = (std::string("INSERT INTO ") + tableName + std::string(" (") +
+					headers.substr(0, headers.size() - 2) + std::string(") VALUES (") +
+					values.substr(3, values.size() - 6) + std::string(");")
+					).c_str();
+				res = stmt->executeQuery(query);
+
+				delete res;
+				delete stmt;
+				delete con;
+				break;
+			}
+			catch (sql::SQLException& e) {
+				std::cout << "Error: " << e.what() << std::endl;
+				break;
+			}
+			catch (std::string e) {
+				std::cout << "Error: " << e << std::endl;
+			}
+		}
+	};
+
+	void actualizarRegistro(int id, std::string tableName) {
+		while (true) {
+			try {
+				sql::mysql::MySQL_Driver* driver;
+				sql::Connection* con;
+				sql::Statement* stmt;
+				sql::ResultSet* res;
+
+				// Create a MySQL connection
+				driver = sql::mysql::get_mysql_driver_instance();
+				con = driver->connect(host, user, password);
+
+				// Connect to the database
+				con->setSchema(database);
+
+				// Execute a query and fetch 
+				array<String^>^ headerArray = gcnew array<String^>(this->tableView->Columns->Count -1);
+				for (int i = 1; i < this->tableView->Columns->Count; i++) {
+					headerArray[i - 1] = this->tableView->Columns[i]->HeaderText;
+				}
+				array<String^>^ valueArray = gcnew array<String^>(this->tableView->Columns->Count -1);
+				int i = 0;
+				for each (Control ^ control in this->camposTabla->Controls) {
+					TextBox^ textBox = dynamic_cast<TextBox^>(control);
+					if (textBox != nullptr) {
+						if (textBox->Text == "") throw std::string("Campos incompletos");
+						valueArray[i] = textBox->Text;
+						i++;
+					}
+				}
+				
+				String^ set = "";
+				for (int i = 0; i < this->tableView->Columns->Count -1; i++) {
+					set += headerArray[i] + " = '" + valueArray[i] + "', ";
+				}
+				std::string setStr = msclr::interop::marshal_as<std::string>(set);
+				std::string values = msclr::interop::marshal_as<std::string>(String::Join("', '", valueArray));
+				stmt = con->createStatement();
+				const char* query = (std::string("UPDATE ") + tableName + std::string(" SET ") + setStr.substr(0, setStr.size()-2) +
+					std::string(" WHERE ") + msclr::interop::marshal_as<std::string>(this->tableView->Columns[0]->HeaderText) +
+					std::string(" = ") + std::to_string(id) + std::string(";")
+					).c_str();
+				res = stmt->executeQuery(query);
+
+				delete res;
+				delete stmt;
+				delete con;
+				break;
+			}
+			catch (sql::SQLException& e) {
+				std::cout << "Error: " << e.what() << std::endl;
+				break;
+			}
+			catch (std::string e) {
+				std::cout << "Error: " << e << std::endl;
+			}
+		}
+	};
+
 	private: System::Void BtnGuardar_Click(System::Object^ sender, System::EventArgs^ e) {
 		std::string tableName = msclr::interop::marshal_as<std::string>(this->LblTabla->Text).substr(7);
 		int id = Int32::Parse(this->LblID->Text);
-		if (id == 0) nuevoRegistro();
-		else actualizarRegistro()
-		try {
-			sql::mysql::MySQL_Driver* driver;
-			sql::Connection* con;
-			sql::Statement* stmt;
-			sql::ResultSet* res;
-
-			// Create a MySQL connection
-			driver = sql::mysql::get_mysql_driver_instance();
-			con = driver->connect(host, user, password);
-
-			// Connect to the database
-			con->setSchema(database);
-
-			// Execute a query and fetch data
-			array<String^>^ headerArray = gcnew array<String^>(this->tableView->Columns->Count);
-			for (int i = 1; i < this->tableView->Columns->Count; i++) {
-				headerArray[i-1] = this->tableView->Columns[i]->HeaderText;
-			}
-			String^ headers = String::Join(", ", headerArray);
-			array<String^>^ valueArray = gcnew array<String^>(this->tableView->Columns->Count);
-			int i = 0;
-			for each (Control ^ control in this->camposTabla->Controls) {
-				TextBox^ textBox = dynamic_cast<TextBox^>(control);
-				if (textBox != nullptr) {
-					valueArray[i] = textBox->Text;
-					i++;
-				}
-			}
-			String^ values = String::Join(", ", valueArray);
-			stmt = con->createStatement();
-			const char* query = (std::string("INSERT INTO ") + tableName + std::string(" (") +
-				msclr::interop::marshal_as<std::string>(headerArray) + std::string(") VALUES (") +
-				msclr::interop::marshal_as<std::string>(values) + std::string(");")
-				).c_str();
-			res = stmt->executeQuery(query);
-
-			delete res;
-			delete stmt;
-			delete con;
-		} catch (sql::SQLException& e) {
-			std::cout << "Error: " << e.what() << std::endl;
-		}
+		if (id == 0) nuevoRegistro(tableName);
+		else actualizarRegistro(id, tableName);
 		displayTable(tableName);
 	}
 };

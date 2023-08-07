@@ -1,4 +1,4 @@
-#include "MyForm.h"
+#include "Interfaz.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -6,7 +6,7 @@ using namespace System::Windows::Forms;
 int main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	FormTest::MyForm frm;
+	FormTest::Interfaz frm;
 
 	Application::Run(% frm);
 	return 0;
